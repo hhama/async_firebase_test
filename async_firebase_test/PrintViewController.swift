@@ -20,7 +20,7 @@ class PrintViewController: UIViewController {
         let realm = try! Realm()
         let dicEntryArray = realm.objects(DicEntry.self)
 
-        let printString = "dictionary-size: \(dicEntryArray.count)"
+        let printString = "ID: \(dicEntryArray[100].id) jname: \(dicEntryArray[100].jname)"
         printValueLabel.text = printString
     }
 

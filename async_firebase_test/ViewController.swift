@@ -66,35 +66,33 @@ class ViewController: UIViewController {
         
         print("DEBUG_PRINT in readingDictionary()")
 
-        rootRef = Database.database().reference()
-        for idx in 0..<Const.DataLength {
-            let path = Const.DataPath + "/" + String(idx)
-            let defaultPlace = rootRef.child(path)
+        let defaultPlace = Database.database().reference().child(Const.DataPath)
             
-            defaultPlace.observeSingleEvent(of: .value, with: { snapshot in
+        defaultPlace.observeSingleEvent(of: .value, with: { snapshot in
 
-                self.ActivityIndicator.stopAnimating() // クルクルストップ
-                self.grayView.removeFromSuperview()
+            self.ActivityIndicator.stopAnimating() // クルクルストップ
+            self.grayView.removeFromSuperview()
 
-                if let postDict = snapshot.value as? NSDictionary {
+            if let postDict = snapshot.value as? [NSDictionary] {
                     
+                for idx in 0..<postDict.count {
                     // 追加するデータを用意
                     let dicEntry = DicEntry()
-                    dicEntry.id = postDict["id"] as! String? ?? ""
-                    dicEntry.jname = postDict["jname"] as! String? ?? ""
-                    dicEntry.tname = postDict["tname"] as! String? ?? ""
-                    dicEntry.wylie = postDict["wylie"] as! String? ?? ""
-                    dicEntry.tags = postDict["tags"] as! String? ?? ""
-                    dicEntry.image = postDict["image"] as! String? ?? ""
-                    dicEntry.eng = postDict["eng"] as! String? ?? ""
-                    dicEntry.chn = postDict["chn"] as! String? ?? ""
-                    dicEntry.kata = postDict["kata"] as! String? ?? ""
-                    dicEntry.pron = postDict["pron"] as! String? ?? ""
-                    dicEntry.verb = postDict["verb"] as! String? ?? ""
-                    dicEntry.exp = postDict["exp"] as! String? ?? ""
-                    dicEntry.bunrui1 = postDict["bunrui1"] as! String? ?? ""
-                    dicEntry.bunrui2 = postDict["bunrui2"] as! String? ?? ""
-                    dicEntry.bunrui3 = postDict["bunrui3"] as! String? ?? ""
+                    dicEntry.id = postDict[idx]["id"] as! String? ?? ""
+                    dicEntry.jname = postDict[idx]["jname"] as! String? ?? ""
+                    dicEntry.tname = postDict[idx]["tname"] as! String? ?? ""
+                    dicEntry.wylie = postDict[idx]["wylie"] as! String? ?? ""
+                    dicEntry.tags = postDict[idx]["tags"] as! String? ?? ""
+                    dicEntry.image = postDict[idx]["image"] as! String? ?? ""
+                    dicEntry.eng = postDict[idx]["eng"] as! String? ?? ""
+                    dicEntry.chn = postDict[idx]["chn"] as! String? ?? ""
+                    dicEntry.kata = postDict[idx]["kata"] as! String? ?? ""
+                    dicEntry.pron = postDict[idx]["pron"] as! String? ?? ""
+                    dicEntry.verb = postDict[idx]["verb"] as! String? ?? ""
+                    dicEntry.exp = postDict[idx]["exp"] as! String? ?? ""
+                    dicEntry.bunrui1 = postDict[idx]["bunrui1"] as! String? ?? ""
+                    dicEntry.bunrui2 = postDict[idx]["bunrui2"] as! String? ?? ""
+                    dicEntry.bunrui3 = postDict[idx]["bunrui3"] as! String? ?? ""
                     
                     // データを追加
                     let realm = try! Realm()
@@ -102,8 +100,8 @@ class ViewController: UIViewController {
                         realm.add(dicEntry)
                     }
                 }
-            })
-        }
+            }
+        })
     }
 
     override func didReceiveMemoryWarning() {
